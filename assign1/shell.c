@@ -1,3 +1,9 @@
+/**
+ *   CS2106 Assignment 1
+ *   Zheng Weihan(A0097582N)
+ *   Patric()
+**/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -36,7 +42,7 @@ int main (){
 			int err = execvp(args[0], args);
 			if(err < 0){
 				printf("Shell error: %s\n", strerror(errno));
-				return;
+				return 1;
 			}
 		}
 		

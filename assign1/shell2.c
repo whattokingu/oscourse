@@ -1,3 +1,9 @@
+/**
+ *   CS2106 Assignment 1
+ *   Zheng Weihan (A0097582N)
+ *   Patrick ()
+**/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -19,12 +25,15 @@ int main (int argc, char *argv[], char *envp[]){
 		childEnv[i]=envp[i];
 	}
 	char shellpath[PATH_MAX+20];
-	sprintf(shellpath, "%s/%s",getcwd(shellpath, PATH_MAX), argv[0]);
+	char *shell[20];
+
+	sprintf(shellpath, "%s/%s",getcwd(shellpath, PATH_MAX), argv[0]+2);
 	char shellEnv[PATH_MAX+30];
 	sprintf(shellEnv, "%s=%s","SHELL_PATH",shellpath);
 	childEnv[i] = (char *)shellEnv;
 	childEnv[i+1] = NULL;
-	printf(childEnv[i]);
+	// printf(childEnv[i]);
+	// printf("\n");
 	while(1){
 		printf("> ");
 		fgets(name, 100, stdin);
@@ -57,9 +66,9 @@ int main (int argc, char *argv[], char *envp[]){
 			int err = execvp(args[0], args);
 			if(err < 0){
 				printf("Shell error: %s\n", strerror(errno));
-				return;
+				return 1;
 			}
 		}
-		
-	}	
+
+	}
 }

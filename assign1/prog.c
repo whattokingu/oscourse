@@ -1,3 +1,9 @@
+/**
+  *  CS2106 Assignment 1
+	Zheng Weihan(A0097582N)
+	Patrick()
+ **/
+
 #include <stdio.h>
 #include <string.h>
 
