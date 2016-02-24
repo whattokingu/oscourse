@@ -21,22 +21,19 @@ int main (){
 		char *args[100];
 		char *token = strtok(name," ");
 		int i = 0;
-		//printf("args list: \n");
 		while(token != NULL){
 			args[i] = token;
 			token = strtok(NULL, " ");
-			//printf("%s ", args[i]);
 			i++;
 		}
-		//printf("\n");
 		args[i] = (char*) NULL;
 		int pid = fork();
-		//printf("pid %d", pid);
 		if(pid > 0){
 			printf("Loading new process with id %d\n", pid);
 			int status;
 			waitpid(pid, &status, 0);
 			printf("\n");
+
 		}else if(pid == 0){
 			printf("> Parent pid: %d\n", getppid());
 			int err = execvp(args[0], args);
@@ -45,6 +42,5 @@ int main (){
 				return 1;
 			}
 		}
-		
-	}	
+	}
 }

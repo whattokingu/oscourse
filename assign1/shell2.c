@@ -19,21 +19,31 @@ int main (int argc, char *argv[], char *envp[]){
 	while(envp[numEnv] != NULL){
 		numEnv++;
 	}
-	char **childEnv = (char**) malloc(sizeof(char*)*(numEnv+2));
+	//alloc new env array with additional slot for SHELL_PATH
 	int i;
+	int isShellPathSet;
+	
+	char **childEnv = (char**) malloc(sizeof(char*)*(numEnv+2));
+	isShellPathSet = 0;
+	//copy old env array to new env array, checking if SHELL_PATH is defined.
 	for(i=0;i<numEnv;i++){
 		childEnv[i]=envp[i];
+		if(strstr(envp[i], "SHELL_PATH") != NULL){
+			isShellPathSet = 1;
+		}
 	}
-	char shellpath[PATH_MAX+20];
-	char *shell[20];
 
-	sprintf(shellpath, "%s/%s",getcwd(shellpath, PATH_MAX), argv[0]+2);
 	char shellEnv[PATH_MAX+30];
-	sprintf(shellEnv, "%s=%s","SHELL_PATH",shellpath);
-	childEnv[i] = (char *)shellEnv;
-	childEnv[i+1] = NULL;
-	// printf(childEnv[i]);
-	// printf("\n");
+	//add SHELL_PATH if it is not defined, define it.
+	if(!isShellPathSet){
+		char shellpath[PATH_MAX+20];
+		char *shell[20];
+		sprintf(shellpath, "%s/%s",getcwd(shellpath, PATH_MAX), argv[0]+2);
+		sprintf(shellEnv, "%s=%s","SHELL_PATH",shellpath);
+		childEnv[i++] = (char *)shellEnv;
+	}
+	
+	childEnv[i] = NULL;
 	while(1){
 		printf("> ");
 		fgets(name, 100, stdin);
@@ -43,19 +53,14 @@ int main (int argc, char *argv[], char *envp[]){
 		char *args[100];
 		char *token = strtok(name," ");
 		int i = 0;
-		//printf("args list: \n");
 		while(token != NULL){
 			args[i] = token;
 			token = strtok(NULL, " ");
-			//printf("%s ", args[i]);
 			i++;
 		}
-		//printf("\n");
 		args[i] = (char*) NULL;
-		//printf(childEnv[numEnv-1]);
 		environ = childEnv;
 		int pid = fork();
-		//printf("pid %d", pid);
 		if(pid > 0){
 			printf("Loading new process with id %d\n", pid);
 			int status;
