@@ -1,7 +1,7 @@
 /**
  *   CS2106 Assignment 1
  *   Zheng Weihan (A0097582N)
- *   Patrick ()
+ *   Tse Hong Ming (A0148808U)
 **/
 
 #include <stdlib.h>
