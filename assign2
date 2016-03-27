@@ -1,0 +1,84 @@
+Question 1
+
+This is what I see on the screen: 
+Parent sent message: Hello child! and 128
+
+My single statement description is:
+Parent process writes to the pipe and child reads (prints) the content out
+
+Question 2 
+
+The sizeof function returns size in byte of the object representation of type
+
+Question 3 
+
+My completed code is attached below: // not finish it yet, haha :)
+
+Question 4
+
+The threads print out of order. The reason is threads work in parallel, instead of working in sequence. 
+Some threads which are created after than the others, but may possibly finish earilier than others, 
+and thus the printing sequence is out of order.
+
+Question 5
+// not quite sure how to answer this question, but i think shar the same memory should be correct anyway
+
+The threads do share memory. 	Referring to ctr, I conclude this because the values of ctr in “more later created” threads 
+are always larger than that in the ones created before. 
+Instead of having its own memory copy, all threads share memory and edit the same global value ctr.
+
+Question 6
+
+The values of ctr as printed by the threads are wrong. The reason is the older threads have not finished its work yet 
+(the ctr has not increased by 1 yet), and the new threads are created, those new ones read the old ctr value. 
+Thus, it causes several threads print out the same value of ctr, which is wrong.
+
+Question 7
+
+The variable "i" must be cast into void* because creating thread by using pthreads, 
+it needs to point to a function that takes a single void* argument and return void* as well.
+
+In child it does not have to be cast back into int because the t is a “void pointer”, which means t can point to any type of variable. 
+Thus, when using printf() to print the value, “%d” format specifier indicates that the corresponding argument should be an integer, 
+and then successfully print the t out, as long as “i” is originally an integer, otherwise, the output is unpredictable.
+
+Question 8
+
+The changes I made are to ensure one thread finishes its work before the next thread is created, 
+in order to ensure the ctr is always increased by 1 and threads work in order.
+
+My code is attached here:
+for(i=0; i<10; i++){
+		pthread_create(&thread[i], NULL, child, (void *) i);
+		pthread_join(thread[i], NULL);
+}
+
+Question 9
+The value of glob printed by main is 20.
+
+Question 10
+The changes we made are adding pthread_t thread[10], pthread_create() and pthread_join(), 
+using thread[i] to act as the thread that calls child(), pthread_create() creates the thread and 
+pthread_join() ensures each thread finishes its own work before the next thread is created.
+
+pthread_t thread[10]; // global variable
+
+for(i=0; i<10; i++){
+	pthread_create(&thread[i], NULL, child, (void *) i);
+pthread_join(thread[i], NULL);
+}
+
+Question 11
+The value printed is correct. This is because each thread finishes its own work before the next thread is created. 
+After the 10 threads finish, the glob successfully being added to 20.
+
+Question 12
+// the question doesn't make sense to me, because I can update the glob correctly, but this is not related to the mutex at all.
+//just simply using pthread_join is enough for question 12 and 13
+
+The threads now update glob correctly/incorrectly. This is because...
+
+Question 13
+
+The changes we made were...
+Our program is attached below:
